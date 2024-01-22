@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-echo-server
+  namespace: flask-echo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask-echo-server
+  template:
+    metadata:
+      labels:
+        app: flask-echo-server
+    spec:
+      containers:
+      - name: flask-echo-server
+        image: smony/flaskecho:0.0.1
+        ports:
+        - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flask-echo-server-service
+  namespace: flask-echo
+spec:
+  selector:
+    app: flask-echo-server
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
